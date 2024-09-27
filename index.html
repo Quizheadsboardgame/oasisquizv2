@@ -3,139 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Quiz</title>
+    <title>OASIS</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        * {
             margin: 0;
-            background-color: #0CC0DF; /* Background color */
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container {
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            width: 40%;
-            max-width: 800px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow */
-            padding: 20px;
-        }
-        img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            cursor: pointer;
-            border: 5px solid #0CC0DF; /* Outer blue border color */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .qa-box {
-            margin-top: 20px;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
             text-align: center;
         }
-        .question {
-            font-size: 1.4em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
         }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
         .answer {
-            font-size: 1.2em;
-            color: #555;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Text shadow */
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img id="quizImage" src="https://i.imgur.com/A1YnwNG.png" alt="Quiz Image">
-        <div class="qa-box">
-            <div id="question" class="question">Click the image to get a question!</div>
-            <div id="answer" class="answer"></div>
-        </div>
+
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="George Michael Logo">
+    <h1>OASIS</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
     </div>
-    
-    <script>
-        const questionsAndAnswers = [
-            { question: "What year was Oasis formed?", answer: "1991" },
-            { question: "What is the name of Oasis's debut album?", answer: "Definitely Maybe" },
-            { question: "Which Oasis song features the line 'You gotta roll with it'?", answer: "Roll with It" },
-            { question: "Who are the two main songwriting members of Oasis?", answer: "Noel Gallagher and Liam Gallagher" },
-            { question: "What is the name of Oasis's hit single that reached number one in the UK charts in 1995?", answer: "Wonderwall" },
-            { question: "Which Oasis album includes the tracks 'Don't Look Back in Anger' and 'Champagne Supernova'?", answer: "What's the Story) Morning Glory?" },
-            { question: "What was the title of Oasis's third studio album released in 1997?", answer: "Be Here Now" },
-            { question: "Which Oasis song's music video features the band performing on a rooftop?", answer: "Live Forever" },
-            { question: "What is the name of Oasis's 2000 album that features the single 'Go Let It Out'?", answer: "Standing on the Shoulder of Giants" },
-            { question: "What was the name of Oasis's 2005 album?", answer: "Don't Believe the Truth" },
-            { question: "Which Oasis single was released as part of the album 'Dig Out Your Soul' in 2008?", answer: "The Shock of the Lightning" },
-            { question: "What was the name of Oasis's final studio album released in 2008?", answer: "Dig Out Your Soul" },
-            { question: "What is the name of the Oasis track with the lyrics 'I need to be myself, I can't be no one else'?", answer: "Cigarettes & Alcohol" },
-            { question: "Which member of Oasis released a solo album titled 'High Flying Birds'?", answer: "Noel Gallagher" },
-            { question: "What year did Oasis release their live album 'Familiar to Millions'?", answer: "2000" },
-            { question: "Which Oasis song includes the lyrics 'I wanna be adored'?", answer: "I Wanna Be Adored" },
-            { question: "What is the title of Oasis's 1998 compilation album?", answer: "The Masterplan" },
-            { question: "Which Oasis single has the lyrics 'You and I are gonna live forever'?", answer: "Live Forever" },
-            { question: "What is the name of the Oasis track that features the line 'I can't see the end of the world'?", answer: "The Importance of Being Idle" },
-            { question: "Which Oasis album was released in 1994?", answer: "Definitely Maybe" },
-            { question: "What is the name of the song that features the lyrics 'All the roads we have to walk are winding'?", answer: "Wonderwall" },
-            { question: "Who was the lead guitarist for Oasis?", answer: "Noel Gallagher" },
-            { question: "What is the name of the track that starts with the lyrics 'I get up when I'm down'?", answer: "Morning Glory" },
-            { question: "Which song by Oasis is known for its opening guitar riff and the lyrics 'I'm a rolling stone'?", answer: "Champagne Supernova" },
-            { question: "What is the name of Oasis's album that includes the song 'The Hindu Times'?", answer: "Heathen Chemistry" },
-            { question: "Which Oasis album features the song 'Songbird'?", answer: "Heathen Chemistry" },
-            { question: "What is the title of the song that contains the lyrics 'So Sally can wait, she knows it's too late'?", answer: "Don't Look Back in Anger" },
-            { question: "Which song includes the line 'I'm a little bit of everything, all rolled into one'?", answer: "Don't Look Back in Anger" },
-            { question: "What was the name of Oasis's 2002 compilation album?", answer: "Stop the Clocks" },
-            { question: "Which Oasis track has the lyrics 'I see a lot of things that I could never understand'?", answer: "The Shock of the Lightning" },
-            { question: "What is the name of the Oasis song with the lyrics 'Because maybe, you're gonna be the one that saves me'?", answer: "Wonderwall" },
-            { question: "Which Oasis album features the track 'Be Here Now'?", answer: "Be Here Now" },
-            { question: "What is the name of the Oasis song that includes the lyrics 'You and me are gonna live forever'?", answer: "Live Forever" },
-            { question: "What is the name of the 1996 Oasis single that reached number 1 in the UK charts?", answer: "Don't Look Back in Anger" },
-            { question: "Which Oasis song has the lyrics 'And all the roads that lead you there were winding'?", answer: "Wonderwall" },
-            { question: "What is the name of the song that features the lyrics 'I'm gonna live forever, I'm gonna learn how to fly'?", answer: "Champagne Supernova" },
-            { question: "Which Oasis album includes the hit single 'Go Let It Out'?", answer: "Standing on the Shoulder of Giants" },
-            { question: "What is the name of the song by Oasis with the lyrics 'You don't have to worry, cause I'm right here beside you'?", answer: "Songbird" },
-            { question: "Which Oasis song has the lyrics 'I'm a soldier in the war on modern life'?", answer: "The Hindu Times" },
-            { question: "What is the title of the Oasis album that was released in 1995?", answer: "What's the Story) Morning Glory?" },
-            { question: "Which song includes the line 'I need to be myself, I can't be no one else'?", answer: "Cigarettes & Alcohol" },
-            { question: "What is the name of the Oasis album that features the track 'Magic Pie'?", answer: "Be Here Now" },
-            { question: "Which Oasis album includes the song 'Little by Little'?", answer: "Don't Believe the Truth" },
-            { question: "What is the title of the Oasis single with the lyrics 'You don't have to worry, cause I'm right here beside you'?", answer: "Songbird" },
-            { question: "Which Oasis song is known for the line 'You gotta roll with it'?", answer: "Roll with It" },
-            { question: "What is the name of the song that features the lyrics 'And all the roads that lead you there were winding'?", answer: "Wonderwall" },
-            { question: "What Oasis album features the song 'The Masterplan'?", answer: "The Masterplan" },
-            { question: "Which Oasis single was released in 1996 and features the line 'So Sally can wait, she knows it's too late'?", answer: "Don't Look Back in Anger" },
-            { question: "What is the title of the Oasis song with the lyrics 'I'm a rolling stone'?", answer: "Champagne Supernova" },
-            { question: "Which Oasis album was released in 2000?", answer: "Standing on the Shoulder of Giants" },
-            { question: "What is the name of the Oasis track that includes the lyrics 'You and I are gonna live forever'?", answer: "Live Forever" },
-            { question: "Which song features the line 'I'm a soldier in the war on modern life'?", answer: "The Hindu Times" },
-            { question: "What is the title of the Oasis album released in 2002?", answer: "Stop the Clocks" },
-            { question: "Which Oasis song has the lyrics 'You don't have to worry, cause I'm right here beside you'?", answer: "Songbird" },
-            { question: "What is the name of the song by Oasis with the lyrics 'I see a lot of things that I could never understand'?", answer: "The Shock of the Lightning" },
-            { question: "Which Oasis single features the line 'I'm a rolling stone'?", answer: "Champagne Supernova" },
-            { question: "What is the name of the Oasis track that starts with 'I get up when I'm down'?", answer: "Morning Glory" },
-            { question: "Which Oasis album features the song 'Little by Little'?", answer: "Don't Believe the Truth" },
-            { question: "What is the title of the Oasis single with the lyrics 'You gotta roll with it'?", answer: "Roll with It" },
-            { question: "What Oasis song features the lyrics 'You and I are gonna live forever'?", answer: "Live Forever" },
-            { question: "Which Oasis album was released in 1997?", answer: "Be Here Now" },
-            { question: "What is the name of the Oasis song that includes the lyrics 'And all the roads that lead you there were winding'?", answer: "Wonderwall" },
-            { question: "Which Oasis single features the line 'You don't have to worry, cause I'm right here beside you'?", answer: "Songbird" },
-            { question: "What is the title of the Oasis track that features the lyrics 'I'm a little bit of everything, all rolled into one'?", answer: "Don't Look Back in Anger" }
-        ];
+</div>
 
-        document.getElementById('quizImage').addEventListener('click', function() {
-            const randomIndex = Math.floor(Math.random() * questionsAndAnswers.length);
-            const question = questionsAndAnswers[randomIndex].question;
-            const answer = questionsAndAnswers[randomIndex].answer;
+<script>
+    // Question and answers data
+    const quizData = [
+        { question: "What year was Oasis formed?", answer: "1991" },
+        { question: "What is the name of Oasis's debut album?", answer: "Definitely Maybe" },
+        { question: "Which Oasis song features the line 'You gotta roll with it'?", answer: "Roll with It" },
+        { question: "Who are the two main songwriting members of Oasis?", answer: "Noel Gallagher and Liam Gallagher" },
+        { question: "What is the name of Oasis's hit single that reached number one in the UK charts in 1995?", answer: "Wonderwall" },
+        { question: "Which Oasis album includes the tracks 'Don't Look Back in Anger' and 'Champagne Supernova'?", answer: "(What's the Story) Morning Glory?" },
+        { question: "What was the title of Oasis's third studio album released in 1997?", answer: "Be Here Now" },
+        { question: "Which Oasis song's music video features the band performing on a rooftop?", answer: "Live Forever" },
+        { question: "What is the name of Oasis's 2000 album that features the single 'Go Let It Out'?", answer: "Standing on the Shoulder of Giants" },
+        { question: "What was the name of Oasis's 2005 album?", answer: "Don't Believe the Truth" },
+        { question: "Which Oasis single was released as part of the album 'Dig Out Your Soul' in 2008?", answer: "The Shock of the Lightning" },
+        { question: "What was the name of Oasis's final studio album released in 2008?", answer: "Dig Out Your Soul" },
+        { question: "What is the name of the Oasis track with the lyrics 'I need to be myself, I can't be no one else'?", answer: "Cigarettes & Alcohol" },
+        { question: "Which member of Oasis released a solo album titled 'High Flying Birds'?", answer: "Noel Gallagher" },
+        { question: "What year did Oasis release their live album 'Familiar to Millions'?", answer: "2000" },
+        { question: "What is the title of Oasis's 1998 compilation album?", answer: "The Masterplan" },
+        { question: "Which Oasis single has the lyrics 'You and I are gonna live forever'?", answer: "Live Forever" },
+        { question: "What is the name of the Oasis track that features the line 'I can't see the end of the world'?", answer: "The Importance of Being Idle" },
+        { question: "Which Oasis album was released in 1994?", answer: "Definitely Maybe" },
+        { question: "What is the name of the song that features the lyrics 'All the roads we have to walk are winding'?", answer: "Wonderwall" },
+        { question: "Who was the lead guitarist for Oasis?", answer: "Noel Gallagher" },
+        { question: "What is the name of the track that starts with the lyrics 'I get up when I'm down'?", answer: "Morning Glory" },
+        { question: "Which song by Oasis is known for its opening guitar riff and the lyrics 'I'm a rolling stone'?", answer: "Champagne Supernova" },
+        { question: "What is the name of Oasis's album that includes the song 'The Hindu Times'?", answer: "Heathen Chemistry" },
+        { question: "Which Oasis album features the song 'Songbird'?", answer: "Heathen Chemistry" },
+        { question: "What is the title of the song that contains the lyrics 'So Sally can wait, she knows it's too late'?", answer: "Don't Look Back in Anger" },
+        { question: "What was the name of Oasis's 2002 compilation album?", answer: "Stop the Clocks" },
+        { question: "What is the name of the Oasis song with the lyrics 'Because maybe, you're gonna be the one that saves me'?", answer: "Wonderwall" },
+        { question: "Which Oasis album features the track 'Be Here Now'?", answer: "Be Here Now" },
+        { question: "Which Oasis song has the lyrics 'And all the roads that lead you there were winding'?", answer: "Wonderwall" },
+        { question: "Which Oasis album includes the hit single 'Go Let It Out'?", answer: "Standing on the Shoulder of Giants" },
+        { question: "What is the name of the Oasis song that includes the lyrics 'You don't have to worry, cause I'm right here beside you'?", answer: "Songbird" },
+        { question: "Which Oasis song has the lyrics 'I'm a soldier in the war on modern life'?", answer: "The Hindu Times" },
+        { question: "What is the title of the Oasis album that was released in 1995?", answer: "(What's the Story) Morning Glory?" },
+        { question: "Which Oasis album features the song 'Little by Little'?", answer: "Don't Believe the Truth" },
+        { question: "What is the name of the Oasis album that features the track 'Magic Pie'?", answer: "Be Here Now" },
+        { question: "Which Oasis album includes the song 'Little by Little'?", answer: "Don't Believe the Truth" },
+        { question: "Which Oasis album was released in 1997?", answer: "Be Here Now" },
+        { question: "What is the title of the Oasis track that features the lyrics 'I'm a little bit of everything, all rolled into one'?", answer: "Don't Look Back in Anger" },
+        { question: "Which Oasis song is known for the line 'You gotta roll with it'?", answer: "Roll with It" },
+        { question: "What is the name of the Oasis song that includes the lyrics 'You and I are gonna live forever'?", answer: "Live Forever" },
+        { question: "Which song includes the line 'I'm a soldier in the war on modern life'?", answer: "The Hindu Times" },
+        { question: "Which Oasis single was released in 1996 and features the line 'So Sally can wait, she knows it's too late'?", answer: "Don't Look Back in Anger" },
+        { question: "Which Oasis song has the lyrics 'You don't have to worry, cause I'm right here beside you'?", answer: "Songbird" },
+        { question: "Which Oasis single features the line 'I'm a rolling stone'?", answer: "Champagne Supernova" },
+        { question: "What is the name of the Oasis track that starts with 'I get up when I'm down'?", answer: "Morning Glory" },
+        { question: "Which Oasis album was released in 2000?", answer: "Standing on the Shoulder of Giants" },
+        { question: "What is the title of the Oasis single with the lyrics 'You gotta roll with it'?", answer: "Roll with It" },
+        { question: "What is the name of the Oasis track that includes the lyrics 'You and I are gonna live forever'?", answer: "Live Forever" }
+    ];
 
-            document.getElementById('question').textContent = question;
-            document.getElementById('answer').textContent = answer;
-        });
-    </script>
+    let currentQuestionIndex = 0;
+
+    // Shuffle the quiz data
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Start the quiz
+    shuffle(quizData);
+    showQuestion();
+
+    function showQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.innerText = quizData[currentQuestionIndex].question;
+        answerContainer.innerText = "Loading answer...";
+
+        // Fade in effect
+        answerContainer.classList.remove("fadeIn");
+        answerContainer.classList.add("fadeOut");
+
+        setTimeout(() => {
+            answerContainer.innerText = quizData[currentQuestionIndex].answer;
+            answerContainer.classList.remove("fadeOut");
+            answerContainer.classList.add("fadeIn");
+        }, 500);
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            showQuestion();
+        } else {
+            const questionContainer = document.getElementById("question");
+            const answerContainer = document.getElementById("answer");
+            questionContainer.innerText = "Thank you for playing!";
+            answerContainer.innerText = "";
+            document.getElementById("next-button").style.display = "none"; // Hide the next button
+        }
+    }
+</script>
+
 </body>
 </html>
+
